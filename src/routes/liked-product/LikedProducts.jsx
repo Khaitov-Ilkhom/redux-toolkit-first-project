@@ -11,9 +11,7 @@ const LikedProducts = () => {
 
   const removedLikedProduct = (product) => {
     dispatch(removeLikedProduct(product))
-    notification.success({
-      message: "Product removed from liked"
-    })
+
   }
 
   return (

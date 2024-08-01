@@ -11,9 +11,9 @@ const Cards = ({product}) => {
   const {likedProduct} = useSelector(state => state.like)
   const addLiked = (product) => {
     dispatch(addLikedProduct(product))
-    notification.success({
-      message: "Product added to liked"
-    })
+    // notification.success({
+    //   message: "Product added to liked"
+    // })
   }
 
   return (
@@ -32,7 +32,9 @@ const Cards = ({product}) => {
       <Button onClick={() => addLiked(product)}
         className="absolute top-2 right-2 z-10 shadow-form w-[50px] h-[50px] rounded-full bg-white flex justify-center items-center">
         {
-          likedProduct.some(liked => liked.id === product.id) ? <FaHeart className="text-red-500" size={30}/> : <FaRegHeart className="text-red-500" size={30}/>
+          likedProduct.some(liked => liked.id === product.id) ?
+            <FaHeart className="text-red-500" size={30}/>
+            : <FaRegHeart className="text-red-500" size={30}/>
         }
       </Button>
     </div>

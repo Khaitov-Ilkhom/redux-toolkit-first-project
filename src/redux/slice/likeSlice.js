@@ -12,6 +12,10 @@ const likeSlice = createSlice({
       if (likedProducts === - 1) {
         state.likedProduct.push(payload)
       }
+      else{
+        state.likedProduct = state.likedProduct.filter(product => product.id !== payload.id)
+
+      }
       localStorage.setItem("likedProduct", JSON.stringify(state.likedProduct))
     },
     removeLikedProduct: (state, {payload}) => {
