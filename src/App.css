@@ -1,0 +1,13 @@
+.hero {
+  width: 100%;
+  background-image: url("./images/image.png");
+  background-size: 100% 550px;
+  background-repeat: no-repeat;
+}
+
+button {
+  transition: 0.3s;
+}
+button:active {
+  transform: scale(0.9);
+}
