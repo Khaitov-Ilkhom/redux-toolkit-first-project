@@ -11,6 +11,7 @@ const Cards = ({product}) => {
   const {likedProduct} = useSelector(state => state.like)
   const addLiked = (product) => {
     dispatch(addLikedProduct(product))
+
     // notification.success({
     //   message: "Product added to liked"
     // })
