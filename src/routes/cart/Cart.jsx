@@ -1,19 +1,12 @@
 import {useDispatch, useSelector} from "react-redux";
 import {CiCircleRemove} from "react-icons/ci";
-import {removeFromCart} from "../../redux/slice/cartSlice.js";
+import {countDecrement, countIncrement, removeFromCart} from "../../redux/slice/cartSlice.js";
 import Navbar from "../../components/navbar/Navbar.jsx";
 
 const Cart = () => {
 
-  const {products} = useSelector(state => state.cart)
+  const {products, count} = useSelector(state => state.cart)
   const dispatch = useDispatch()
-
-  // const incrementStock = (id) => {
-  //   dispatch({type: "INCREMENT_STOCK", id})
-  // }
-  // const decrementStock = (id) => {
-  //   dispatch({type: "DECREMENT_STOCK", id})
-  // }
 
   return (
     <>
@@ -45,14 +38,14 @@ const Cart = () => {
               <td className="max-w-[300px] w-full px-[10px] flex justify-center items-center">
                 <div
                   className="bg-[#f6f7f8] max-w-[140px] w-full flex justify-between items-center px-4 py-2 mt-[70px] font-bold rounded-lg">
-                  <button onClick={() => decrementStock(product.id)} className="text-sky-400">-
+                  <button onClick={() => dispatch(countDecrement({quantity: 1}))} className="text-sky-400">-
                   </button>
-                  <span>{product.stock}</span>
-                  <button onClick={() => incrementStock(product.id)} className="text-sky-400">+
+                  <span>{count}</span>
+                  <button onClick={() => dispatch(countIncrement({quantity: 1}))} className="text-sky-400">+
                   </button>
                 </div>
               </td>
-              <td className="max-w-[200px] text-center ">${(product.price * product.stock).toFixed(2)}</td>
+              <td className="max-w-[200px] text-center ">${(product.price * count).toFixed(2)}</td>
             </tr>
           )
         }

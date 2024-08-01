@@ -8,16 +8,16 @@ import master_card from "../../images/master-card.png"
 import pay_pal from "../../images/pay-pal.png"
 import {SlBasketLoaded} from "react-icons/sl";
 import Navbar from "../../components/navbar/Navbar.jsx";
-import {addToCart} from "../../redux/slice/cartSlice.js";
-import {useDispatch} from "react-redux";
+import {addToCart, countDecrement, countIncrement} from "../../redux/slice/cartSlice.js";
+import {useDispatch, useSelector} from "react-redux";
 
 
 const Single = () => {
-  const [stock, setStock] = useState(1)
   const [like, setLike] = useState(false)
   const {id} = useParams()
   const [product] = useFetch(`products/${id}`)
   const dispatch = useDispatch()
+  const {count} = useSelector(state => state.cart)
 
   return (
     <>
@@ -90,9 +90,9 @@ const Single = () => {
               <div className="w-full flex justify-between items-center">
                 <div
                   className="bg-[#f6f7f8] max-w-[140px] w-full flex justify-between px-4 py-2 font-bold rounded-lg">
-                  <button onClick={() => setStock(stock > 1 ? stock - 1 : stock)} className="text-sky-400">-</button>
-                  <span>{stock}</span>
-                  <button onClick={() => setStock(stock > 0 ? stock + 1 : stock)} className="text-sky-400">+</button>
+                  <button onClick={() => dispatch(countDecrement({quantity: 1}))} className="text-sky-400">-</button>
+                  <span>{count}</span>
+                  <button onClick={() => dispatch(countIncrement({quantity: 1}))} className="text-sky-400">+</button>
                 </div>
                 <div className="flex items-center gap-4">
                   <button onClick={() => dispatch(addToCart(product))}
