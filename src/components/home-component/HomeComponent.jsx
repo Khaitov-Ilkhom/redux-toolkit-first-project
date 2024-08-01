@@ -38,7 +38,7 @@ const HomeComponent = () => {
       <div className="w-full grid grid-cols-4 gap-5 px-[100px] py-[50px]">
         {
           data?.slice(0, stock).map(product =>
-            <Cards key={product.id} product={product}/>
+            <Cards type={"allCard"} key={product.id} product={product}/>
           )
         }
       </div>

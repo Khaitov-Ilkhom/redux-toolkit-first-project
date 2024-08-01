@@ -8,8 +8,8 @@ import master_card from "../../images/master-card.png"
 import pay_pal from "../../images/pay-pal.png"
 import {SlBasketLoaded} from "react-icons/sl";
 import Navbar from "../../components/navbar/Navbar.jsx";
-import {addToCart, countDecrement, countIncrement} from "../../redux/slice/cartSlice.js";
-import {useDispatch, useSelector} from "react-redux";
+import {addToCart} from "../../redux/slice/cartSlice.js";
+import {useDispatch} from "react-redux";
 
 
 const Single = () => {
@@ -17,7 +17,22 @@ const Single = () => {
   const {id} = useParams()
   const [product] = useFetch(`products/${id}`)
   const dispatch = useDispatch()
-  const {count} = useSelector(state => state.cart)
+  const [productCount, setProductCount] = useState(1);
+
+  const handleProductCountIncrement = () => {
+    setProductCount(count => count + 1)
+  }
+
+  const handleProductCountDecrement = () => {
+    if(productCount > 1){
+      setProductCount(count => count - 1)
+    }
+  }
+
+  const handleAddToCart = (product) => {
+    dispatch(addToCart({...product, quantity: productCount}));
+    setProductCount(1)
+  }
 
   return (
     <>
@@ -90,12 +105,12 @@ const Single = () => {
               <div className="w-full flex justify-between items-center">
                 <div
                   className="bg-[#f6f7f8] max-w-[140px] w-full flex justify-between px-4 py-2 font-bold rounded-lg">
-                  <button onClick={() => dispatch(countDecrement({quantity: 1}))} className="text-sky-400">-</button>
-                  <span>{count}</span>
-                  <button onClick={() => dispatch(countIncrement({quantity: 1}))} className="text-sky-400">+</button>
+                  <button disabled={productCount === 1} onClick={handleProductCountDecrement} className="text-sky-400">-</button>
+                  <span>{productCount}</span>
+                  <button onClick={handleProductCountIncrement} className="text-sky-400">+</button>
                 </div>
                 <div className="flex items-center gap-4">
-                  <button onClick={() => dispatch(addToCart(product))}
+                  <button onClick={() => handleAddToCart(product)}
                           className="bg-sky-100 text-sky-400 py-2 px-4 flex items-center rounded-lg gap-3">
                     <span><SlBasketLoaded/></span> Add To Cart
                   </button>

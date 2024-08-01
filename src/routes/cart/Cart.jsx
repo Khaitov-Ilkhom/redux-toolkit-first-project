@@ -1,23 +1,25 @@
 import {useDispatch, useSelector} from "react-redux";
 import {CiCircleRemove} from "react-icons/ci";
-import {countDecrement, countIncrement, removeFromCart} from "../../redux/slice/cartSlice.js";
+import {addToCart, removeFromCart} from "../../redux/slice/cartSlice.js";
 import Navbar from "../../components/navbar/Navbar.jsx";
+import {useEffect, useState} from "react";
+import CountUp from "react-countup";
 
 const Cart = () => {
-
-  const {products, count} = useSelector(state => state.cart)
   const dispatch = useDispatch()
+  const {products} = useSelector((state) => state.cart);
+
 
   return (
     <>
       <Navbar/>
-      <table className="px-[60px] w-full my-[100px]">
+      <table className="px-[60px] w-full mt-[100px] mb-4">
         <tbody className="w-full">
         <tr className="w-full justify-around items-center border-b-2">
           <th className="max-w-[300px] py-3 text-zinc-800 text-xl font-medium">PRODUCT</th>
           <th className="max-w-[300px] py-3 text-zinc-800 text-xl font-medium">PRICE</th>
           <th className="max-w-[300px] py-3 text-zinc-800 text-xl font-medium">QTY</th>
-          <th className="max-w-[300px] py-3 text-zinc-800 text-xl font-medium">UNIT PRICE</th>
+          <th className="max-w-[300px] py-3 text-zinc-800 text-xl font-medium">PRICE</th>
         </tr>
         {
           products?.map(product =>
@@ -26,7 +28,7 @@ const Cart = () => {
               <td className=" max-w-[400px] pl-[30px] py-5">
                 <div className="flex items-center gap-5">
                   <button className="font-2xl text-red-600"
-                          onClick={() => dispatch(removeFromCart(product.id))}><CiCircleRemove/></button>
+                          onClick={() => dispatch(removeFromCart({...product, quantity: 0}))}><CiCircleRemove/></button>
                   <img className="w-[200px] h-[150px] object-contain" src={product.image}
                        alt={product.title}/>
                   <span>{product.title}</span>
@@ -38,14 +40,15 @@ const Cart = () => {
               <td className="max-w-[300px] w-full px-[10px] flex justify-center items-center">
                 <div
                   className="bg-[#f6f7f8] max-w-[140px] w-full flex justify-between items-center px-4 py-2 mt-[70px] font-bold rounded-lg">
-                  <button onClick={() => dispatch(countDecrement({quantity: 1}))} className="text-sky-400">-
+                  <button disabled={product.quantity === 1}
+                          onClick={() => dispatch(removeFromCart({...product, quantity: 1}))} className="text-sky-400">-
                   </button>
-                  <span>{count}</span>
-                  <button onClick={() => dispatch(countIncrement({quantity: 1}))} className="text-sky-400">+
+                  <span>{product.quantity}</span>
+                  <button onClick={() => dispatch(addToCart({...product, quantity: 1}))} className="text-sky-400">+
                   </button>
                 </div>
               </td>
-              <td className="max-w-[200px] text-center ">${(product.price * count).toFixed(2)}</td>
+              <td className="max-w-[200px] text-center ">${(product.price * product.quantity).toFixed(2)}</td>
             </tr>
           )
         }
